@@ -28,7 +28,8 @@
         <div class="login">
           <div class="login-triangle"></div>
           <h2 class="login-header" style="color: #FFFFFF">Doctor Sign Up</h2>
-          <form method="post" action="{{ url_for('docregister') }}" style="height:600px;overflow-y:auto;" class="login-container">
+          <!-- style="height:600px;overflow-y:auto;"  -->
+          <form method="post" action="{{ url_for('docregister') }}" class="login-container">
               <p><input type="text" placeholder="Full Name" name="full_name"></p>
               <p><input type="text" name="username" placeholder="Username"></p>
               <p><input type="text" name="email" placeholder="Email"></p>
@@ -64,10 +65,21 @@
               <p><input type="text" name="available_days" placeholder="Available Days (e.g., Mon, Tue, Wed)"></p>
               <p><input type="text" name="available_times" placeholder="Available Times (e.g., 9 AM - 5 PM)"></p>
               <p><input type="text" name="fees" placeholder="Consultation Fees"></p>
-              <p><input type="submit" value="Sign Up"></p>
+              
           </form>
+          <p><input type="submit" value="Sign Up"></p>
         </div>
-        <button id="goLeft" class="on" style="margin-top:10px; margin-bottom: 10px; color:white">Login</button>
+       <div style="text-align: center; margin: 5px;width: 400px;">
+        <span style="color: aliceblue; font-size: 16px; display: block; margin-bottom: 10px;">
+          Already have an account?
+        </span>
+        <button id="goLeft" class="on" style="padding: 10px 15px; background-color: #007BFF; border: none; border-radius: 5px; cursor: pointer; color: white; transition: background-color 0.3s;">
+          <span>Login</span>
+        </button>
+      </div>
+
+
+        <!-- <button id="goLeft" class="on" style="margin-top:10px; margin-bottom: 10px; color:white">Login</button> -->
       </div>
     </div>
 
@@ -87,13 +99,19 @@
         <div class="login">
           <div class="login-triangle"></div>
           <h2 class="login-header" style="color: #FFFFFF">Doctor Login</h2>
-          <form method="post" action="{{ url_for('doclogin') }}" class="login-container">
+          <form method="post" action="{{ url_for('doclogin') }}" style="height: 250px;" class="login-container">
             <p><input type="text" placeholder="Username" name="username"></p>
             <p><input type="password" placeholder="Password" name="password"></p>
             <p><input type="submit" value="Log in"></p>
           </form>
         </div>
-        <button id="goRight" class="on" style="color:white; margin-top: 10px">Sign Up</button>
+         <div class="login-container-bottom">
+                <div class="signup-message">
+                    <p>Don't have an account? <span><button id="goRight" class="signup-button">Sign Up</button></span></p>
+                </div>
+                <!-- <button id="goRight" class="on" style="color:white; margin-top: 10px">Sign Up</button> -->
+            </div>
+        
       </div>
     </div>
   </div>
