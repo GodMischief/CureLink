@@ -1,0 +1,211 @@
+{% extends 'dashboardExtender.html' %}
+
+{% block sidebar %}
+<div class="scrollbar-sidebar">
+    <div class="app-sidebar__inner">
+        <ul class="vertical-nav-menu">
+            <li class="app-sidebar__heading">Dashboard</li>
+            <li>
+                <a href="{{ url_for('home') }}">
+                    <i class="metismenu-icon fa fa-home"></i>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('bmi') }}">
+                    <i class="metismenu-icon fa fa-user"></i>BMI
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('diagnose') }}">
+                    <i class="metismenu-icon fa fa-plus-circle"></i>Diagnose(Symptoms)
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('diagnosecardio') }}">
+                    <i class="metismenu-icon fa fa-plus-circle"></i>Diagnose(Cardio)
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="fa fa-plus-circle icon-gradient bg-amy-crisp"> </i>
+                </div>
+                <div>Diagnose
+                    <div class="page-title-subheading">Diagnose your problems with Curelink.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content">
+        <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title">Possible Disease</h5>
+                            <div class="mb-2 mr-2 badge badge-pill badge-danger">{{ answer }}</div>
+                            
+                            <!-- <br><br> -->
+                            <!-- <h5 class="card-title">Possible Medicine</h5> -->
+                            <!-- <div class="mb-2 mr-2 badge badge-pill badge-alternate">{{ medicine }}</div> -->
+                            
+                            <br><br>
+                            <h5 class="card-title">Possible Specialist to Refer to</h5>
+                            <div class="mb-2 mr-2 badge badge-pill badge-success">{{ special }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h5 class="card-title">Doctors with Specialization</h5>
+        {% if doctors %}
+        <table class="table table-hover" id="doctorsTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Clinic</th>
+                    <th>Address</th>
+                    <th>Days</th>
+                    <th>Time</th>
+                    <th>Fees</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor[4] }}</td>
+                        <td>{{ doctor[6] }}</td>
+                        <td>{{ doctor[7] }}</td>
+                        <td>{{ doctor[9] }}</td>
+                        <td>{{ doctor[10] }}</td>
+                        <td>{{ doctor[11] }}</td>
+                        <td>{{ doctor[12] }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary open-modal" 
+                                    data-doctor-id="{{ doctor[0] }}"
+                                    data-doctor-name="{{ doctor[4] }}"
+                                    data-available-times="{{ doctor[11] }}"
+                                    data-fees="{{ doctor[12] }}">
+                                Book
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                No doctors found with the given specialization.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Custom Modal -->
+<div id="customModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="close-btn">&times;</span>
+        <h5>Book Appointment</h5>
+        <p><strong>Doctor:</strong> <span id="modalDoctorName"></span></p>
+        <p><strong>Available Times:</strong> <span id="modalAvailableTimes"></span></p>
+        <p><strong>Fees:</strong> ₹<span id="modalFees"></span></p>
+        <form action="{{ url_for('book') }}" method="POST">
+            <input type="hidden" name="doctor_id" id="modalDoctorId">
+            <input type="hidden" name="patient_id" value="{{ user_id }}">
+            <input type="hidden" name="appointment_time" id="modalAppointmentTime">
+            <button type="submit" class="btn btn-primary">Confirm Booking</button>
+        </form>
+    </div>
+</div>
+
+<!-- Ensure jQuery is included -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+{{ super() }}
+
+<!-- Custom Modal Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById("customModal");
+    var closeBtn = document.getElementsByClassName("close-btn")[0];
+
+    closeBtn.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    var bookButtons = document.querySelectorAll('.open-modal');
+    bookButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var doctorId = this.getAttribute('data-doctor-id');
+            var doctorName = this.getAttribute('data-doctor-name');
+            var availableTimes = this.getAttribute('data-available-times');
+            var fees = this.getAttribute('data-fees');
+
+            document.getElementById('modalDoctorName').textContent = doctorName;
+            document.getElementById('modalAvailableTimes').textContent = availableTimes;
+            document.getElementById('modalFees').textContent = fees;
+            document.getElementById('modalDoctorId').value = doctorId;
+            document.getElementById('modalAppointmentTime').value = availableTimes;
+
+            modal.style.display = "block";
+        });
+    });
+});
+</script>
+
+<style>
+/* Custom modal CSS */
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+{% endblock %}
