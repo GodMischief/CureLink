@@ -167,6 +167,12 @@ input {
 .login-container {
   background: #ebebeb;
   padding: 12px;
+  cursor: pointer;
+  height: 450px;
+  overflow-y:auto
+}
+.login-container-bottom{
+  font: bold;
 }
 
 /* Every row inside .login-container is defined with p tags */
@@ -213,6 +219,28 @@ input {
 /* Buttons' focus effect */
 .login input[type="submit"]:focus {
   border-color: #05a;
+}
+
+.signup-message p {
+  margin: 0; /* Remove default margin */
+  margin-top: 8px;
+  text-align: center;
+  color: #9f5757;
+}
+.signup-message p:hover{
+font-size: 15px;
+}
+.signup-button {
+  background-color: #007bff; /* Button background color */
+  color: white; /* Button text color */
+  border: none; /* No border for button */
+  padding: 5px 10px; /* Padding inside button */
+  border-radius: 5px; /* Rounded corners for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Transition for hover effect */
+}
+.signup-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
 .scrollable-form{height:400px;overflow-y:auto}
